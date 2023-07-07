@@ -1,0 +1,103 @@
+-- Function to execute a command
+local function executeCommand(command)
+    local prefix = "/activate"
+    local commandString = "/" .. command
+
+    if string.sub(commandString, 1, #prefix) == prefix then
+        local actualCommand = string.sub(commandString, #prefix + 1)
+        if actualCommand == "Bypass" then
+            -- Add your desired code here for the "Bypass Chat" command
+            loadstring("loadstring(game:HttpGet("https://raw.githubusercontent.com/synnyyy/synergy/additional/betterbypasser", true))({")()
+        elseif actualCommand == "RGBText" then
+            -- Add your desired code here for the "EXAMPLE2" command
+            loadstring("https://raw.githubusercontent.com/nErDyIsC00L/RainbowText/main/Script")()
+        elseif actualCommand == "Translate" then
+            -- Add your desired code here for the "Translate" command
+            loadstring("https://raw.githubusercontent.com/nErDyIsC00L/Translate/main/Script")()
+        elseif actualCommand == "Fates" then
+            -- Add your desired code here for the "Fates OP ADMIN" command
+            loadstring(game:HttpGet"https://raw.githubusercontent.com/nErDyIsC00L/Fatahh/main/Fatahh")()
+        elseif actualCommand == "AFK" then
+            -- Add your desired code here for the "Anti AFK" command
+           loadstring(game:HttpGet"https://raw.githubusercontent.com/nErDyIsC00L/afk/main/afk")()
+        elseif actualCommand == "PDAF" then
+            -- Add your desired code here for the "Pls Donate Autofarm" command
+           loadstring(game:HttpGet"https://raw.githubusercontent.com/CF-Trail/tzechco-PlsDonateAutofarmBackup/main/autofarm"))()
+        elseif actualCommand == "Invis" then
+            -- Add your desired code here for the "Pls Donate Autofarm" command
+            loadstring(game:HttpGet"https://raw.githubusercontent.com/nErDyIsC00L/Invisible/main/script"))()
+        end
+    end
+end
+
+-- Hook into the Chatted event
+game.Players.LocalPlayer.Chatted:Connect(function(message)
+    executeCommand(message)
+end)
+
+-- Variables
+local infiniteJumpEnabled = false
+local flyEnabled = false
+local flyHoldTime = 3
+local flyStartTime = 0
+local guiHidden = false
+
+-- Function to toggle infinite jump
+local function toggleInfiniteJump()
+    infiniteJumpEnabled = not infiniteJumpEnabled
+end
+
+-- Function to toggle fly
+local function toggleFly()
+    flyEnabled = not flyEnabled
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(flyEnabled and 3 or 2)
+end
+
+-- Function to hide/show GUI
+local function toggleGUI()
+    guiHidden = not guiHidden
+    game.Players.LocalPlayer.PlayerGui:SetTopbarTransparency(guiHidden and 1 or 0)
+end
+
+-- Hook into the Chatted event
+game.Players.LocalPlayer.Chatted:Connect(function(message)
+    if message == "/gamemode creative" then
+        toggleInfiniteJump()
+        toggleGUI()
+    elseif message == "/gamemode survival" then
+        infiniteJumpEnabled = false
+        toggleGUI()
+    end
+end)
+
+-- Infinite jump activation logic
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if infiniteJumpEnabled then
+        game.Players.LocalPlayer.Character.Humanoid:ChangeState(3)
+    end
+end)
+
+-- Hook into the key press and release events
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Space then
+        flyStartTime = tick()
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Space then
+        local flyHoldDuration = tick() - flyStartTime
+        if flyHoldDuration >= flyHoldTime then
+            toggleFly()
+        end
+    end
+end)
+
+-- Hide the GUI initially
+toggleGUI()
+
+---[[
+-- Load and execute the fly script
+loadstring("ADD FLY LOADSTRING HERE")()
+--]]
+
